@@ -38,15 +38,15 @@ public class StudentRepository {
     }
     public int addStudent(Student student) {
         String sql = """
-                INSERT INTO students(name, age, email, grade, score)
-                VALUES (?,?,?,?,?,?);
-                """;
+            INSERT INTO students(name, age, email, grade, score)
+            VALUES (?,?,?,?,?);
+            """;
         try (Connection connection = DriverManager.getConnection(
                 DatabaseConnectionConfig.databaseUrl,
                 DatabaseConnectionConfig.databaseUserName,
                 DatabaseConnectionConfig.databasePassword
         );
-             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             preparedStatement.setString(1, student.getName());
             preparedStatement.setInt(2, student.getAge());
@@ -55,13 +55,12 @@ public class StudentRepository {
             preparedStatement.setDouble(5, student.getScore());
             int rowAffected = preparedStatement.executeUpdate();
             if (rowAffected > 0) {
-                System.out.println("Data has been insert successfully.");
+                System.out.println("Data has been inserted successfully.");
                 return rowAffected;
             } else {
-                System.out.println("Data is failed to insert");
+                System.out.println("Data insertion failed.");
             }
-            return 0;
-        } catch (Exception exception) {
+        } catch (SQLException exception) {
             System.out.println("Error inserting new student data: " + exception.getMessage());
         }
         return 0;

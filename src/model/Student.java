@@ -21,14 +21,13 @@ public class Student {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                "age=" + age +
-                ", id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", grade='" + grade + '\'' +
-                ", score=" + score +
+        return "Student { " +
+                " id = " + id +
+                ", age = " + age +
+                ", name = '" + name + '\'' +
+                ", email = '" + email + '\'' +
+                ", grade = '" + grade + '\'' +
+                ", score = " + score +
                 '}';
     }
 

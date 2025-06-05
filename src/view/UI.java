@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.List;
 
+import static utils.ValidationUtil.isValidGrade;
+
 public class UI {
     private static final StudentRepository studentRepo = new StudentRepository();
     private static final Scanner scanner = new Scanner(System.in);
@@ -35,23 +37,34 @@ public class UI {
             int opt = new Scanner(System.in).nextInt();
             try {
                 switch (opt) {
-                    case 1 : {
+                    case 1: {
                         System.out.println("Enter student details:");
                         System.out.print("Name: ");
                         String name = scanner.nextLine();
                         System.out.print("Age: ");
-                        int age = scanner.nextInt();
-                        if (!ValidationUtil.isValidAge(age)) throw new IllegalArgumentException("Age must be positive");
-                        scanner.nextLine();
+                        int age = scanner.nextInt(); scanner.nextLine();
+                        if (age <= 0) {
+                            System.out.println("❌ Age must be a positive number.");
+                            break;
+                        }
                         System.out.print("Email: ");
                         String email = scanner.nextLine();
-                        if (!ValidationUtil.isValidEmail(email)) throw new IllegalArgumentException("Invalid email format");
+                        if (!ValidationUtil.isValidEmail(email)) {
+                            System.out.println("❌ Invalid email format.");
+                            break;
+                        }
                         System.out.print("Grade: ");
                         String grade = scanner.nextLine().toUpperCase();
-                        if (!ValidationUtil.isValidGrade(grade)) throw new IllegalArgumentException("Grade must be A-F");
+                        if (!isValidGrade(grade)) {
+                            System.out.println("❌ Grade must be between A and F.");
+                            break;
+                        }
                         System.out.print("Score: ");
                         Double score = scanner.nextDouble();
-                        if (!ValidationUtil.isValidScore(score)) throw new IllegalArgumentException("Score must be 0-100");
+                        if (score < 0 || score > 100) {
+                            System.out.println("❌ Score must be between 0 and 100.");
+                            break;
+                        }
                         Student student = new Student(0, name, age, email, grade, score);
                         studentRepo.addStudent(student);
                         System.out.println("✅ Student added successfully!");
@@ -81,7 +94,7 @@ public class UI {
                         if (!ValidationUtil.isValidEmail(email)) throw new IllegalArgumentException("Invalid email format");
                         System.out.print("New grade: ");
                         String grade = UI.scanner.nextLine().toUpperCase();
-                        if (!ValidationUtil.isValidGrade(grade)) throw new IllegalArgumentException("Grade must be A-F");
+                        if (!isValidGrade(grade)) throw new IllegalArgumentException("Grade must be A-F");
                         System.out.print("New score: ");
                         double score = UI.scanner.nextDouble();
                         if (!ValidationUtil.isValidScore(score)) throw new IllegalArgumentException("Score must be 0-100");
@@ -145,7 +158,7 @@ public class UI {
                             scanner.nextLine();
                             if (!ValidationUtil.isValidAge(age) ||
                                     !ValidationUtil.isValidEmail(email) ||
-                                    !ValidationUtil.isValidGrade(grade) ||
+                                    !isValidGrade(grade) ||
                                     !ValidationUtil.isValidScore(score)) {
                                 System.out.println("⚠️ Invalid input. Skipping this student.");
                                 continue;
